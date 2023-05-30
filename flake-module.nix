@@ -39,10 +39,14 @@ in
             }];
           };
         };
-        config = {
-          checks = lib.mkIf config.treefmt.flakeCheck { treefmt = config.treefmt.build.check self; };
-          formatter = lib.mkIf config.treefmt.flakeFormatter (lib.mkDefault config.treefmt.build.wrapper);
-        };
+        config =
+          (lib.mkIf config.treefmt.flakeCheck {
+            checks.treefmt = config.treefmt.build.check self;
+          }) //
+          (lib.mkIf config.treefmt.flakeFormatter {
+            formatter = lib.mkDefault config.treefmt.build.wrapper;
+          })
+        ;
       });
   };
 }
