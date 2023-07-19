@@ -48,10 +48,13 @@ in
             }];
           };
         };
-        config = {
-          checks = lib.mkIf config.treefmt.flakeCheck { treefmt = config.treefmt.build.check config.treefmt.projectRoot; };
-          formatter = lib.mkIf config.treefmt.flakeFormatter (lib.mkDefault config.treefmt.build.wrapper);
-        };
+        config =
+          (lib.optionalAttrs config.treefmt.flakeCheck {
+            checks.treefmt = config.treefmt.build.check config.treefmt.projectRoot;
+          }) //
+          (lib.optionalAttrs config.treefmt.flakeFormatter {
+            formatter = lib.mkDefault config.treefmt.build.wrapper;
+          });
       });
   };
 }
