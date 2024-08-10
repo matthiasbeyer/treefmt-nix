@@ -197,11 +197,12 @@ in
           package used to do the formatting.
         '';
         defaultText = lib.literalMD "Programs used in configuration";
-        default = pkgs.lib.concatMapAttrs
-          (
-            k: v: if v.enable then { "${k}" = v.package; } else { }
-          )
-          config.programs;
+        default = {};
+        # pkgs.lib.concatMapAttrs
+        #   (
+        #     k: v: if v.enable then { "${k}" = v.package; } else { }
+        #   )
+        #   config.programs;
       };
       check = mkOption {
         description = ''
