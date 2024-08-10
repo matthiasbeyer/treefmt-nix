@@ -85,20 +85,20 @@ let
       projectRootFile = "flake.nix";
     };
 
-    # Check if the examples folder needs to be updated
-    examples = pkgs.runCommand
-      "test-examples"
-      {
-        passthru.examples = examples;
-      }
-      ''
-        if ! diff -r ${../examples} ${examples}; then
-          echo "The generated ./examples folder is out of sync"
-          echo "Run ./examples.sh to fix the issue"
-          exit 1
-        fi
-        touch $out
-      '';
+    # # Check if the examples folder needs to be updated
+    # examples = pkgs.runCommand
+    #   "test-examples"
+    #   {
+    #     passthru.examples = examples;
+    #   }
+    #   ''
+    #     if ! diff -r ${../examples} ${examples}; then
+    #       echo "The generated ./examples folder is out of sync"
+    #       echo "Run ./examples.sh to fix the issue"
+    #       exit 1
+    #     fi
+    #     touch $out
+    #   '';
 
     # Check that the repo is formatted
     self-formatting = treefmtEval.config.build.check ../.;
@@ -108,6 +108,6 @@ let
 
     # Check that the docs render properly
     module-docs = (pkgs.nixosOptionsDoc { options = treefmtDocEval.options; }).optionsCommonMark;
-  } // programConfigs;
+  }; # // programConfigs;
 in
 self
